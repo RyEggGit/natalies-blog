@@ -1,6 +1,8 @@
 <template>
-  <Home v-if="page === 'blog'" @switchPage="switchPage" />
-  <Post v-else @switchPage="switchPage" />
+  <div>
+    <Home v-if="page === 'blog'" @switchPage="switchPage" />
+    <Post v-else @switchPage="switchPage" />
+  </div>
 </template>
 
 <script  setup lang="ts" >

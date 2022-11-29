@@ -7,17 +7,21 @@
       <div class="text-3xl font-bold ml-auto" @click="switchBlog">blog</div>
     </div>
 
-    <div class="mt-36 flex relative">
-      <div class="text-6xl font-bold">Hello I'm 👋<br />Natalie Tsang</div>
-      <div class="ml-auto mt-4">
-        <div class="text-4xl">
-          I'm a quirky person <br />who wants a blog that no one can see
-        </div>
+    <div class="flex h-[90vh]">
+      <div class="flex-1 flex flex-col justify-center mb-48">
+        <div class="text-6xl font-bold">Natalie Tsang</div>
+        <div class="text-6xl">Built Fast💨</div>
+      </div>
+      <div class="flex-1">
+        <iframe
+          src="https://my.spline.design/untitled-2880b9e4fdf5a96c31be6f2e5c7b6732/"
+          frameborder="0"
+          width="100%"
+          height="100%"
+        />
       </div>
     </div>
-    <v-icon @click="scrollToBlog" class="mt-4 text-3xl">
-      mdi-arrow-down
-    </v-icon>
+
     <div class="mt-[40vh]" />
     <!-- Blogs  -->
     <div id="blogs" class="h-48" />
@@ -66,20 +70,25 @@
       </a>
     </div>
   </div>
+
+  <!-- <div class="mt-36 flex relative">
+      <div class="text-6xl font-bold">Hello I'm 👋<br />Natalie Tsang</div>
+      <div class="ml-auto mt-4">
+        <div class="text-4xl">
+          Welcome to my dumb blog! <br/> I run and
+        </div>
+      </div>
+    </div>
+    <v-icon @click="scrollToBlog" class="mt-4 text-3xl">
+      mdi-arrow-down
+    </v-icon>
+    -->
 </template>
 
 <script lang="ts">
 import { defineComponent, defineEmits, onMounted, ref } from "vue";
-import axios from "axios";
-
-interface Blog {
-  title: string;
-  description: string;
-  image?: any;
-  blog?: string;
-  url?: string;
-}
-
+import { Blog } from "../types/types";
+import { getBlogs } from "../mixins/mixins";
 interface Props {}
 
 const emit = defineEmits({
@@ -99,8 +108,8 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      axios.get(`http://localhost:3000/api/blog`).then((resp) => {
-        blogs.value = resp.data;
+      getBlogs().then((resp) => {
+        blogs.value = resp;
         loadingBlog.value = false;
       });
     });

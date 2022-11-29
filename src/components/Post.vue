@@ -69,6 +69,7 @@ export default defineComponent({
     });
 
     const submitBlog = () => {
+      
       axios.post(`http://localhost:3000/api/blog`, form).then((resp) => {
         console.log(resp);
       });
