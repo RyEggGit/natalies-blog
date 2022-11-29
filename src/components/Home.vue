@@ -10,7 +10,7 @@
     <div class="flex h-[90vh]">
       <div class="flex-1 flex flex-col justify-center mb-48">
         <div class="text-6xl font-bold">Natalie Tsang</div>
-        <div class="text-6xl">Built Fast💨</div>
+        <div class="text-5xl mt-2 font-sans font-extralight">Built Fast</div>
       </div>
       <div class="flex-1">
         <iframe
