@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { blobToBase64 } from "../mixins/mixins";
 
 export default defineComponent({
   setup(props, context) {
@@ -55,7 +56,9 @@ export default defineComponent({
         image.value = URL.createObjectURL(blob.value[0]);
         console.log(blob.value[0]);
         console.log(image.value);
-        context.emit("updatePic", { image: image.value, blob: blob.value });
+        blobToBase64(blob.value[0]).then((resp) => {
+          context.emit("updatePic", { image: resp, blob: blob.value });
+        });
       }
     };
 

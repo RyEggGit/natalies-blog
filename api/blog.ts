@@ -1,6 +1,8 @@
 import { connectToDatabase } from "./mongodb";
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Collection } from "mongodb";
+//@ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
@@ -13,6 +15,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     }
     else if (request.method == "POST") {
         const blogs = request.body;
+        blogs["uuid"] = uuidv4();
         await collection.insertOne(blogs);
         return response.status(200).json({ Status: "Successfully added blog to database" });
     }

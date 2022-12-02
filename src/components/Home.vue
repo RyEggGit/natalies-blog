@@ -4,13 +4,21 @@
     <!-- Nav -->
     <div class="flex sticky top-0 z-50 bg-white h-20 items-center">
       <div class="text-3xl font-bold">nt.</div>
-      <div class="text-3xl font-bold ml-auto" @click="switchBlog">blog</div>
+      <div
+        class="text-3xl font-bold ml-auto cursor-pointer"
+        @click="switchPost"
+      >
+        blog
+      </div>
     </div>
 
     <div class="flex h-[90vh]">
       <div class="flex-1 flex flex-col justify-center mb-48">
         <div class="text-6xl font-bold">Natalie Tsang</div>
         <div class="text-5xl mt-2 font-sans font-extralight">Built Fast</div>
+        <v-icon @click="scrollToBlog" class="mt-10" x-large
+          >mdi-arrow-down</v-icon
+        >
       </div>
       <div class="flex-1">
         <iframe
@@ -22,30 +30,58 @@
       </div>
     </div>
 
-    <div class="mt-[40vh]" />
+    <div class="mt-[35vh]" />
     <!-- Blogs  -->
-    <div id="blogs" class="h-48" />
-    <div v-if="loadingBlog">
-      <div>Loading Blogs</div>
+    <div id="blogs" class="h-36" />
+    <div v-if="loadingBlog" class="flex flex-col items-center">
+      <div class="text-2xl text-center mb-3">Loading Blogs</div>
+      <v-progress-linear
+        color="green"
+        indeterminate
+        rounded
+        height="6"
+      ></v-progress-linear>
     </div>
     <div v-else>
-      <template v-for="(blog, index) in blogs" :key="index">
-        <!-- Blog Template -->
-        <div class="flex">
-          <!-- Left Side -->
-          <div class="relative flex-1">
-            <div class="text-bold text-4xl">{{ blog.title }}</div>
-            <div class="text-2xl mt-4 w-full">{{ blog.description }}</div>
-            <div class="absolute bottom-0">See Blog</div>
+      <v-tabs color="green" class="ml-[-3vh]" @update:modelValue="handleTabs">
+        <v-tab>all</v-tab>
+        <v-tab>food</v-tab>
+        <v-tab>running</v-tab>
+        <v-tab>life</v-tab>
+      </v-tabs>
+      <div class="mt-[5vh]">
+        <template v-for="(blog, index) in filteredBlogs" :key="index">
+          <!-- Blog Template -->
+          <div class="flex">
+            <!-- Left Side -->
+            <div class="relative flex-1">
+              <div class="text-bold text-4xl">{{ blog.title }}</div>
+              <div class="text-2xl mt-4 w-full">{{ blog.description }}</div>
+              <div
+                class="absolute bottom-0 text-blue underline cursor-pointer"
+                @click="switchBlog(blog)"
+              >
+                See Blog
+              </div>
+            </div>
+            <!-- Right Side -->
+            <v-img
+              v-if="blog.image"
+              :src="blog.image"
+              class="flex-1 h-[45vh] w-full"
+              width="100%"
+            />
+            <div
+              class="bg-stone-500 ml-20 h-[45vh] flex flex-[2_2_0%]"
+              v-else
+            />
           </div>
-          <!-- Right Side -->
-          <div class="bg-stone-500 ml-20 h-[45vh] flex flex-[2_2_0%]"></div>
-        </div>
-        <div
-          v-if="index != blogs.length - 1"
-          class="border-t-2 border-stone-700 my-20"
-        />
-      </template>
+          <div
+            v-if="index != filteredBlogs.length - 1"
+            class="border-t-2 border-stone-700 my-20"
+          />
+        </template>
+      </div>
     </div>
 
     <div class="mt-[25vh]" />
@@ -70,19 +106,6 @@
       </a>
     </div>
   </div>
-
-  <!-- <div class="mt-36 flex relative">
-      <div class="text-6xl font-bold">Hello I'm 👋<br />Natalie Tsang</div>
-      <div class="ml-auto mt-4">
-        <div class="text-4xl">
-          Welcome to my dumb blog! <br/> I run and
-        </div>
-      </div>
-    </div>
-    <v-icon @click="scrollToBlog" class="mt-4 text-3xl">
-      mdi-arrow-down
-    </v-icon>
-    -->
 </template>
 
 <script lang="ts">
@@ -91,15 +114,12 @@ import { Blog } from "../types/types";
 import { getBlogs } from "../mixins/mixins";
 interface Props {}
 
-const emit = defineEmits({
-  // Validate submit event
-  switchPage: (page) => page,
-});
-
 export default defineComponent({
   setup(props, context) {
     const loadingBlog = ref(true);
     const blogs = ref<Blog[]>([]);
+    const filteredBlogs = ref<Blog[]>([]);
+    const tabs = ref();
 
     const scrollToBlog = () => {
       document.getElementById("blogs")?.scrollIntoView({
@@ -110,6 +130,7 @@ export default defineComponent({
     onMounted(() => {
       getBlogs().then((resp) => {
         blogs.value = resp;
+        filteredBlogs.value = resp;
         loadingBlog.value = false;
       });
     });
@@ -118,8 +139,29 @@ export default defineComponent({
       window.location.href = "https://github.com/RyEggGit";
     };
 
-    const switchBlog = () => {
+    const switchPost = () => {
       context.emit("switchPage", "post");
+    };
+
+    const switchBlog = (blog: any) => {
+      context.emit("switchPage", "blog", blog);
+    };
+
+    const tabMap = new Map();
+    tabMap.set(0, "all");
+    tabMap.set(1, "food");
+    tabMap.set(2, "running");
+    tabMap.set(3, "life");
+
+    const handleTabs = (tab: string) => {
+      const filter = tabMap.get(tab);
+      if (filter != "all") {
+        filteredBlogs.value = blogs.value.filter(
+          (blog) => blog.category == filter
+        );
+      } else {
+        filteredBlogs.value = blogs.value;
+      }
     };
 
     return {
@@ -127,7 +169,11 @@ export default defineComponent({
       goToGitHub,
       loadingBlog,
       blogs,
+      switchPost,
       switchBlog,
+      handleTabs,
+      tabs,
+      filteredBlogs,
     };
   },
 });
