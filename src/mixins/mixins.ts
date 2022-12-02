@@ -11,6 +11,8 @@ export const getBlogs = (): Promise<Blog[]> => {
     });
 };
 
+
+
 export const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> => {
     //https://stackoverflow.com/questions/18650168/convert-blob-to-base64
     return new Promise((resolve, _) => {

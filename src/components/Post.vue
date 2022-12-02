@@ -103,14 +103,18 @@ export default defineComponent({
         day: "numeric",
       });
       newform["password"] = password;
-      axios.post(`http://localhost:3000/api/blog`, newform).then((resp) => {
-        form.title = "";
-        form.description = "";
-        form.image = "";
-        form.blog = "";
-        form.date = "";
-        (form.uuid = ""), (form.category = null);
-      });
+
+      axios
+        //@ts-ignore
+        .post(`${import.meta.env.BASE_URL}/api/blog`, newform)
+        .then((resp) => {
+          form.title = "";
+          form.description = "";
+          form.image = "";
+          form.blog = "";
+          form.date = "";
+          (form.uuid = ""), (form.category = null);
+        });
     };
 
     const backHome = () => {
