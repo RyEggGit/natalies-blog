@@ -21,12 +21,15 @@ import { defineComponent, onBeforeMount, onMounted, ref } from "vue";
 import { getBlogs } from "../mixins/mixins";
 import { Blog } from "../types/types";
 
+import { useBlogStore } from "../stores/blog";
+import { storeToRefs } from "pinia";
+
 export default defineComponent({
   props: {
     blog: {},
   },
   setup(props, context) {
-    const blog = ref();
+    const blog = useBlogStore().getActiveBlog;
 
     const backHome = () => {
       context.emit("switchPage", "home");

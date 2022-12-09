@@ -4,18 +4,11 @@
     <!-- Nav -->
     <div class="flex sticky top-0 z-50 bg-white h-20 items-center">
       <div class="text-3xl font-bold">nt.</div>
-      <div
-        class="text-3xl font-bold ml-auto cursor-pointer"
-        @click="switchPost"
-      >
-        blog
-      </div>
     </div>
 
     <div class="flex h-[90vh]">
       <div class="flex-1 flex flex-col justify-center mb-48">
         <div class="text-6xl font-bold">Natalie Tsang</div>
-        <div class="text-5xl mt-2 font-sans font-extralight">Built Fast</div>
         <v-icon @click="scrollToBlog" class="mt-10" x-large
           >mdi-arrow-down</v-icon
         >
@@ -33,7 +26,7 @@
     <div class="mt-[35vh]" />
     <!-- Blogs  -->
     <div id="blogs" class="h-36" />
-    <div v-if="loadingBlog" class="flex flex-col items-center">
+    <div v-if="blogs.length === 0" class="flex flex-col items-center">
       <div class="text-2xl text-center mb-3">Loading Blogs</div>
       <v-progress-linear
         color="green"
@@ -50,7 +43,7 @@
         <v-tab>life</v-tab>
       </v-tabs>
       <div class="mt-[5vh]">
-        <template v-for="(blog, index) in filteredBlogs" :key="index">
+        <template v-for="(blog, index) in blogs" :key="index">
           <!-- Blog Template -->
           <div class="flex">
             <!-- Left Side -->
@@ -77,7 +70,7 @@
             />
           </div>
           <div
-            v-if="index != filteredBlogs.length - 1"
+            v-if="index != blogs.length - 1"
             class="border-t-2 border-stone-700 my-20"
           />
         </template>
@@ -109,17 +102,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineEmits, onMounted, ref } from "vue";
-import { Blog } from "../types/types";
-import { getBlogs } from "../mixins/mixins";
-interface Props {}
+import { defineComponent, ref } from "vue";
+import { Blog } from "@/types/types";
+import { useBlogStore } from "../stores/blog";
+import { storeToRefs } from "pinia";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   setup(props, context) {
-    const loadingBlog = ref(true);
-    const blogs = ref<Blog[]>([]);
+    const {blogs} = storeToRefs(useBlogStore());
     const filteredBlogs = ref<Blog[]>([]);
     const tabs = ref();
+    const router = useRouter();
 
     const scrollToBlog = () => {
       document.getElementById("blogs")?.scrollIntoView({
@@ -127,24 +121,15 @@ export default defineComponent({
       });
     };
 
-    onMounted(() => {
-      getBlogs().then((resp) => {
-        blogs.value = resp;
-        filteredBlogs.value = resp;
-        loadingBlog.value = false;
-      });
-    });
-
     const goToGitHub = () => {
       window.location.href = "https://github.com/RyEggGit";
     };
 
-    const switchPost = () => {
-      context.emit("switchPage", "post");
-    };
-
     const switchBlog = (blog: any) => {
-      context.emit("switchPage", "blog", blog);
+      useBlogStore().setActiveBlog(blog.uuid);
+      router.push({
+        name: "Blog",
+      });
     };
 
     const tabMap = new Map();
@@ -167,9 +152,7 @@ export default defineComponent({
     return {
       scrollToBlog,
       goToGitHub,
-      loadingBlog,
       blogs,
-      switchPost,
       switchBlog,
       handleTabs,
       tabs,
