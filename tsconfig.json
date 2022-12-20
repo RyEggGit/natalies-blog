@@ -45,7 +45,7 @@
     "./src/**/*",
     "./src/**/*.vue",
     "./src/**/*.ts",
-    "./api/**/*.ts",
+    "./api/**/*.ts", "api/mongodb.js",
   ],
   "exclude": [
     "./node_modules",

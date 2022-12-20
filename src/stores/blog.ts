@@ -13,6 +13,10 @@ export const useBlogStore = defineStore("Blogs", {
             this.blogs = blogs;
         },
 
+        pushBlogs(blogs: Blog[]) {
+            this.blogs.push(blogs);
+        },
+
         setActiveBlog(uuid: string) {
             this.activeBlogUUID = uuid;
         }
@@ -24,8 +28,8 @@ export const useBlogStore = defineStore("Blogs", {
         },
 
         getActiveBlog: (state) =>
-            (currentUUID: string):Blog => state.blogs.find(blog => blog.uuid == currentUUID)
-            //state.blogs.find(blog => blog.uuid === currentUUID)
-        
+            (currentUUID: string): Blog => state.blogs.find(blog => blog.uuid == currentUUID)
+        //state.blogs.find(blog => blog.uuid === currentUUID)
+
     }
 });

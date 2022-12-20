@@ -10,7 +10,10 @@
         <Column :blogs="splitBlogs(3)[1]" class="mx-10" />
         <Column :blogs="splitBlogs(3)[2]" />
       </div>
-      <div class="flex w-full" v-else-if="windowWidth <= 1024 && windowWidth >= 780">
+      <div
+        class="flex w-full"
+        v-else-if="windowWidth <= 1024 && windowWidth >= 780"
+      >
         <Column :blogs="splitBlogs(4)[0]" class="mr-5" />
         <Column :blogs="splitBlogs(4)[1]" class="ml-5" />
       </div>
@@ -36,7 +39,7 @@ export default defineComponent({
   setup(props, context) {
     const { blogs } = storeToRefs(useBlogStore());
 
-    const splitBlogs = (arraySize: number): Blog[] => {
+    const splitBlogs = (arraySize: number): Array<Blog[]> => {
       const numArrays = Math.ceil(blogs.value.length / arraySize);
       const arrays = [];
       for (let i = 0; i < numArrays; i++) {

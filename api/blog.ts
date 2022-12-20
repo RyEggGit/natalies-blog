@@ -10,8 +10,19 @@ export default async function handler(request: VercelRequest, response: VercelRe
     const collection = database?.database.collection("blogs") as Collection;
 
     if (request.method == "GET") {
-        const blogs = await collection.find({}).project({ _id: 0 }).toArray();
-        return response.status(200).json(blogs);
+        const uuid = request.query.uuid;
+        
+        if (uuid) {
+            const blog = await collection.findOne({ uuid: uuid });
+            return response.status(200).json(blog);
+
+        } else {
+            const blogs = await collection.find({}).project({ _id: 0 }).toArray();
+            return response.status(200).json(blogs);
+        }
+
+
+
     }
     else if (request.method == "POST") {
         const blogs = request.body;
@@ -20,7 +31,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
         return response.status(200).json({ Status: "Successfully added blog to database" });
     }
     else if (request.method == "DELETE") {
-        console.log(request.query);
         const uuid = request.query.uuid;
         await collection.deleteOne({ "uuid": uuid });
         return response.status(200).json({ Status: "Successfully removed blog from database" });

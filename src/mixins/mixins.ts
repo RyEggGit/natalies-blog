@@ -5,7 +5,21 @@ import { useBlogStore } from "../stores/blog";
 export const getBlogs = (): void => {
     //@ts-ignore
     axios.get(`${import.meta.env.BASE_URL}api/blog`).then((resp) => {
-        useBlogStore().setBlogs(resp.data)
+        useBlogStore().setBlogs(resp.data);
+    });
+};
+
+export const getBlog = (uuid: string): Promise<void> => {
+    //@ts-ignore
+    return axios.get(`${import.meta.env.BASE_URL}api/blog`, { params: { uuid: uuid } }).then((resp) => {
+        useBlogStore().pushBlogs(resp.data);
+    });
+};
+
+export const getBlogUUIDs = (): Promise<string[]> => {
+    //@ts-ignore
+    return axios.get(`${import.meta.env.BASE_URL}api/load`).then((resp) => {
+        return resp.data;
     });
 };
 
