@@ -3,7 +3,7 @@ import { Blog } from "@/types/types";
 export const useBlogStore = defineStore("Blogs", {
     state: () => {
         return {
-            blogs: [] as Blog[],
+            blogs: [],
             activeBlogUUID: null
         };
     },
@@ -23,8 +23,9 @@ export const useBlogStore = defineStore("Blogs", {
             return state.blogs;
         },
 
-        getActiveBlog() {
-            return this.blogs.find(blog => blog.uuid === this.activeBlogUUID);
-        }
+        getActiveBlog: (state) =>
+            (currentUUID: string):Blog => state.blogs.find(blog => blog.uuid == currentUUID)
+            //state.blogs.find(blog => blog.uuid === currentUUID)
+        
     }
 });

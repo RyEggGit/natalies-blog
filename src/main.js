@@ -17,16 +17,14 @@ const vuetify = createVuetify({
 // Routes
 import { createRouter, createWebHashHistory } from 'vue-router';
 import App from './App.vue';
-import Home from "./components/Home.vue";
-import Post from "./components/Post.vue";
+import Home from "./components/Home/Home.vue";
 import Blog from "./components/Blog.vue";
-import Dashboard from "./components/Dashboard.vue"
+import Dashboard from "./components/Dashboard.vue";
 
 const routes = [
     { path: '/', name: "Home", component: Home },
-    { path: '/post', name: "Post", component: Post },
-    { path: '/blog', name: "Blog", component: Blog },
-    { path: '/dashboard', name: "Dashboard", component: Dashboard }
+    { path: '/blog/:uuid', name: "Blog", component: Blog },
+    { path: '/dashboard', name: "Dashboard", component: Dashboard },
 ];
 
 const router = createRouter({

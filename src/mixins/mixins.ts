@@ -1,16 +1,20 @@
 import axios from "axios";
 import { Blog } from "../types/types";
+import { useBlogStore } from "../stores/blog";
 
-
-export const getBlogs = (): Promise<Blog[]> => {
-    console.log(window.location.href);
+export const getBlogs = (): void => {
     //@ts-ignore
-    return axios.get(`${import.meta.env.BASE_URL}api/blog`).then((resp) => {
-        console.log(resp.data);
-        return resp.data;
+    axios.get(`${import.meta.env.BASE_URL}api/blog`).then((resp) => {
+        useBlogStore().setBlogs(resp.data)
     });
 };
 
+export const removeBlog = (uuid: string): void => {
+    //@ts-ignore
+    axios.delete(`${import.meta.env.BASE_URL}api/blog`, { params: { "uuid": uuid } }).then(() => {
+        getBlogs();
+    });
+};
 
 
 export const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> => {
@@ -21,3 +25,4 @@ export const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> =
         reader.readAsDataURL(blob);
     });
 };
+

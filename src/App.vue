@@ -12,10 +12,13 @@ import { useBlogStore } from "./stores/blog";
 export default defineComponent({
   setup(props, context) {
     onBeforeMount(() => {
-      getBlogs().then((resp) => {
-        useBlogStore().setBlogs(resp);
-      });
+      getBlogs();
     });
+
+    
+
+    return {
+    };
   },
 });
 </script>

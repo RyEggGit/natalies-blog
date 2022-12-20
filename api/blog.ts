@@ -19,5 +19,13 @@ export default async function handler(request: VercelRequest, response: VercelRe
         await collection.insertOne(blogs);
         return response.status(200).json({ Status: "Successfully added blog to database" });
     }
+    else if (request.method == "DELETE") {
+        console.log(request.query);
+        const uuid = request.query.uuid;
+        await collection.deleteOne({ "uuid": uuid });
+        return response.status(200).json({ Status: "Successfully removed blog from database" });
+    } else {
+        return response.status(404).json({ Status: "Method not authorized" });
+    }
 
 }
