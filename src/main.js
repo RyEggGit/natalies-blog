@@ -15,7 +15,7 @@ const vuetify = createVuetify({
 });
 
 // Routes
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
 import Home from "./components/Home/Home.vue";
 import Blog from "./components/Blog.vue";
@@ -28,7 +28,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes
 });
 
