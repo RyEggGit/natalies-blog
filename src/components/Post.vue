@@ -11,7 +11,7 @@
         >Post</v-btn
       >
     </v-toolbar>
-    <v-card elevation="0" class="p-2" style="overflow-y: auto">
+    <v-card elevation="0" class="p-2">
       <div class="flex flex-row">
         <div class="flex-1">
           <v-text-field
