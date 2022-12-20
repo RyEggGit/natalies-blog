@@ -17,7 +17,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
             return response.status(200).json(blog);
 
         } else {
-            const blogs = await collection.find({}).project({ _id: 0 }).toArray();
+            const blogs = await collection.find({}).project({ _id: 0 }).toArray().sort(() => Math.random() - 0.5);
             return response.status(200).json(blogs);
         }
 
