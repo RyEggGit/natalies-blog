@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <div class="flex sticky top-0 z-50 bg-white h-32 items-center">
-      <router-link class="text-3xl font-bold" to="/">nt.</router-link>
-      <div class="flex ml-auto">
-        <v-icon class="ml-2" @click="toInstagram">mdi-instagram</v-icon>
-        <!-- <v-icon class="ml-2" @click="toLinkedIn">mdi-linkedin</v-icon> -->
-        <v-icon class="ml-2" @click="toWaterlooRunning">mdi-run-fast</v-icon>
-      </div>
+  <div class="flex sticky top-0 z-50 bg-white h-32 items-center">
+    <router-link class="text-3xl font-bold" to="/">nt.</router-link>
+    <div class="flex ml-auto">
+      <v-icon class="ml-2" @click="toInstagram">mdi-instagram</v-icon>
+      <!-- <v-icon class="ml-2" @click="toLinkedIn">mdi-linkedin</v-icon> -->
+      <v-icon class="ml-2" @click="toWaterlooRunning">mdi-run-fast</v-icon>
     </div>
   </div>
 </template>

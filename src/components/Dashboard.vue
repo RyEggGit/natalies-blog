@@ -55,6 +55,9 @@ export default defineComponent({
   setup(props, context) {
     const { blogs } = storeToRefs(useBlogStore());
     const createBlogToggle = ref(false);
+
+
+    
     return {
       removeBlog,
       blogs,

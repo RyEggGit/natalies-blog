@@ -116,10 +116,6 @@ export default defineComponent({
         });
     };
 
-    const backHome = () => {
-      context.emit("switchPage", "home");
-    };
-
     const updatePic = (pic: { image: string; blob: Blob }) => {
       form.image = pic.image;
     };
@@ -127,7 +123,6 @@ export default defineComponent({
     return {
       form,
       submitBlog,
-      backHome,
       updatePic,
       password,
     };
